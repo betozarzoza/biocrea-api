@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use Mail;
 use Carbon\Carbon;
 use App\Models\User;
-//  use Conekta\Conekta;
+use Conekta\Conekta;
 
 class AuthController extends Controller
 {
@@ -25,28 +25,26 @@ class AuthController extends Controller
      */
     public function signup(Request $request)
     {
-        //  Conekta::setApiKey(env('CONEKTA_API_KEY'));
+        Conekta::setApiKey(env('CONEKTA_API_KEY'));
         $request->validate([
             'name' => 'required|string',
-            'last_name' => 'required|string',
+            //  'last_name' => 'required|string',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|confirmed'
         ]);
         $user = new User([
             'name' => $request->name,
-            'last_name' => $request->last_name,
+            //  'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
-        /*
         $customer = \Conekta\Customer::create(
           [
-            'name'  => $request->name . ' ' . $request->last_name,
+            'name'  => $request->name,
             'email' => $request->email
           ]
         );
         $user->conekta_id = $customer->id;
-        */
         $user->save();
         return response()->json([
             'message' => 'Successfully created user!'

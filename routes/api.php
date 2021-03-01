@@ -33,8 +33,54 @@ Route::group([
 });
 
 Route::group([
+  'prefix' => 'courses'
+], function() {
+    Route::get('all', 'App\Http\Controllers\CourseController@index');
+    //  Route::post('mycourses', 'App\Http\Controllers\CourseController@myModules');
+});
+
+Route::group([
+    'prefix' => 'user'
+], function () {
+    Route::group([
+      'middleware' => 'auth:api'
+    ], function() {
+        Route::post('courses', 'App\Http\Controllers\CourseController@myModules');
+    });
+});
+
+Route::group([
+    'prefix' => 'module'
+], function () {
+    Route::group([
+      'middleware' => 'auth:api'
+    ], function() {
+        Route::post('get', 'App\Http\Controllers\CourseController@module');
+    });
+});
+
+Route::group([
+  'prefix' => 'imageresizer',
+], function () {
+  Route::get('', 'App\Http\Controllers\ImageResizerController@index');
+});
+
+Route::group([
   'prefix' => 'reset'
 ], function() {
     Route::post('token', 'App\Http\Controllers\AuthController@createResetPasswordToken');
     Route::post('password', 'App\Http\Controllers\AuthController@resetPassword');
+});
+
+Route::group([
+    'prefix' => 'conekta'
+], function () {
+    Route::group([
+      'middleware' => 'auth:api'
+    ], function() {
+        Route::post('user', 'App\Http\Controllers\ConektaController@getConektaUser');
+        Route::post('add/card', 'App\Http\Controllers\ConektaController@addCard');
+        Route::post('checkout', 'App\Http\Controllers\ConektaController@checkout');
+        Route::post('remove/card', 'App\Http\Controllers\ConektaController@deleteCard');
+    });
 });
