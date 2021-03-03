@@ -100,7 +100,7 @@ class CourseController extends Controller
         //  return Module::find($request->module_id);
         $purchased = CoursePurchase::where('user_id', $user->id)->where('product_id', $request->module_id)->count();
         if ($purchased) {
-            return Module::with('course')->find($request->module_id);
+            return Module::with('course')->with('course.modules')->find($request->module_id);
         } else {
             return response()->json([
             'message' => 'No haz comprado este modulo'
