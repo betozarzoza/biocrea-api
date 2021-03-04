@@ -21,6 +21,24 @@ class CourseController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function list()
+    {
+        $free = Course::with('modules')->where('free', 1)->limit(5)->get();
+        $online = Course::with('modules')->where('modality','online')->limit(5)->get();
+        $onsite = Course::with('modules')->where('modality','presencial')->limit(5)->get();
+
+        $data = new \stdClass;
+        $data->free = $free;
+        $data->online = $online;
+        $data->onsite = $onsite;
+        return json_encode($data);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

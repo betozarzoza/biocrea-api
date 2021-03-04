@@ -36,6 +36,7 @@ Route::group([
   'prefix' => 'courses'
 ], function() {
     Route::get('all', 'App\Http\Controllers\CourseController@index');
+    Route::get('list', 'App\Http\Controllers\CourseController@list');
     //  Route::post('mycourses', 'App\Http\Controllers\CourseController@myModules');
 });
 
