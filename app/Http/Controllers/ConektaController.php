@@ -48,6 +48,15 @@ class ConektaController extends Controller
   public function checkout(Request $request) {
       $user = $request->user();
       $total = 0;
+      $count_course_purchases = 0;
+      for ($i = 0; $i < count($request->courses); $i++) {
+        $course_purchase = CoursePurchase::where('product_id', $request->courses[$i]['id'])->where('user_id', $user->id)->count();
+        if ($course_purchase) {
+          return response()->json([
+            'message' => 'Ya tienes comprado el modulo ' . $request->courses[$i]['title']
+          ], 404);
+        }
+      }
       for ($i = 0; $i < count($request->courses); $i++) {
           $total += $request->courses[$i]['price'];
       }
@@ -73,23 +82,28 @@ class ConektaController extends Controller
               ]
           ]
       ]);
-
-      for ($i = 0; $i < count($request->courses); $i++) {
-        $purchase = new CoursePurchase;
-        $purchase->price = $request->courses[$i]['price'];
-        $purchase->product_id = $request->courses[$i]['id'];
-        $purchase->user_id = $user->id;
-        $purchase->purchase_id = '1';
-        $purchase->save();
+      if ($order->payment_status == 'paid') {
+        for ($i = 0; $i < count($request->courses); $i++) {
+          $purchase = new CoursePurchase;
+          $purchase->price = $request->courses[$i]['price'];
+          $purchase->product_id = $request->courses[$i]['id'];
+          $purchase->user_id = $user->id;
+          $purchase->purchase_id = '1';
+          $purchase->save();
+        }
+  			/*
+  			for ($i = 0; $i < count($request->courses[0]['extras']); $i++) {
+  				extra = new PurchasesExtras([
+              'user_id' => $user->id,
+              'course_id' => $request->courses[0]['id']
+          ]);
+  			}
+  			*/
+        return $order;
+      } else {
+        return response()->json([
+          'message' => 'Hubo un error en el pago'
+        ], 500);
       }
-			/*
-			for ($i = 0; $i < count($request->courses[0]['extras']); $i++) {
-				extra = new PurchasesExtras([
-            'user_id' => $user->id,
-            'course_id' => $request->courses[0]['id']
-        ]);
-			}
-			*/
-      return $order;
   }
 }
