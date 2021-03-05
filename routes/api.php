@@ -37,6 +37,7 @@ Route::group([
 ], function() {
     Route::get('all', 'App\Http\Controllers\CourseController@index');
     Route::get('list', 'App\Http\Controllers\CourseController@list');
+    Route::post('search', 'App\Http\Controllers\CourseController@search');
     //  Route::post('mycourses', 'App\Http\Controllers\CourseController@myModules');
 });
 

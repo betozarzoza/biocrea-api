@@ -28,14 +28,30 @@ class CourseController extends Controller
     public function list()
     {
         $free = Course::with('modules')->where('free', 1)->limit(5)->get();
-        $online = Course::with('modules')->where('modality','online')->limit(5)->get();
-        $onsite = Course::with('modules')->where('modality','presencial')->limit(5)->get();
+        $online = Course::where('modality','online')->limit(5)->get();
+        $onsite = Course::where('modality','presencial')->limit(5)->get();
 
         $data = new \stdClass;
         $data->free = $free;
         $data->online = $online;
         $data->onsite = $onsite;
         return json_encode($data);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        if ($request->modality) {
+            return Course::with('modules')->where('modality', $request->modality)->get();
+        } if ($request->price) {
+            return Course::with('modules')->where('free', 1)->get();
+        } else {
+            return Course::with('modules')->get();
+        }
     }
 
     /**
