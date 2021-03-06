@@ -90,6 +90,7 @@ class ConektaController extends Controller
           $purchase->price = $request->courses[$i]['price'];
           $purchase->product_id = $request->courses[$i]['id'];
           $purchase->user_id = $user->id;
+          $purchase->purchase_id = '1';
           $purchase->save();
         }
         return $order;
@@ -99,6 +100,7 @@ class ConektaController extends Controller
           $purchase->price = $request->courses[$i]['price'];
           $purchase->product_id = $request->courses[$i]['id'];
           $purchase->user_id = $user->id;
+          $purchase->purchase_id = '1';
           $purchase->save();
         }
       } else {
