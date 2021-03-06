@@ -61,27 +61,29 @@ class ConektaController extends Controller
           $total += $request->courses[$i]['price'];
       }
       $total = $total * 100;
-      $order = \Conekta\Order::create([
-        'currency' => 'USD',
-        'customer_info' => [
-          'customer_id' => $user->conekta_id
-        ],
-        'line_items' => [
-          [
-            'name' => 'Cursos',
-            'unit_price' => $total,
-            'quantity' => 1
-          ]
-        ],
-        'charges' => [
-              [
-                  'payment_method' => [
-                      'payment_source_id' =>  $request->payment_id,
-                      'type' => 'card'
-                  ]
-              ]
-          ]
-      ]);
+      if ($total > 0) {
+        $order = \Conekta\Order::create([
+          'currency' => 'USD',
+          'customer_info' => [
+            'customer_id' => $user->conekta_id
+          ],
+          'line_items' => [
+            [
+              'name' => 'Cursos',
+              'unit_price' => $total,
+              'quantity' => 1
+            ]
+          ],
+          'charges' => [
+                [
+                    'payment_method' => [
+                        'payment_source_id' =>  $request->payment_id,
+                        'type' => 'card'
+                    ]
+                ]
+            ]
+        ]);
+      }
       if ($order->payment_status == 'paid') {
         for ($i = 0; $i < count($request->courses); $i++) {
           $purchase = new CoursePurchase;
@@ -91,15 +93,16 @@ class ConektaController extends Controller
           $purchase->purchase_id = '1';
           $purchase->save();
         }
-  			/*
-  			for ($i = 0; $i < count($request->courses[0]['extras']); $i++) {
-  				extra = new PurchasesExtras([
-              'user_id' => $user->id,
-              'course_id' => $request->courses[0]['id']
-          ]);
-  			}
-  			*/
         return $order;
+      } else if ($total == 0) {
+        for ($i = 0; $i < count($request->courses); $i++) {
+          $purchase = new CoursePurchase;
+          $purchase->price = $request->courses[$i]['price'];
+          $purchase->product_id = $request->courses[$i]['id'];
+          $purchase->user_id = $user->id;
+          $purchase->purchase_id = '1';
+          $purchase->save();
+        }
       } else {
         return response()->json([
           'message' => 'Hubo un error en el pago'
