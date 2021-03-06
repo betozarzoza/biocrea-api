@@ -84,7 +84,7 @@ class ConektaController extends Controller
             ]
         ]);
       }
-      if ($order->payment_status == 'paid') {
+      if (isset($order) && $order->payment_status == 'paid') {
         for ($i = 0; $i < count($request->courses); $i++) {
           $purchase = new CoursePurchase;
           $purchase->price = $request->courses[$i]['price'];
