@@ -10,6 +10,7 @@ use Mail;
 use Carbon\Carbon;
 use App\Models\User;
 use Conekta\Conekta;
+use App\Mail\confirmEmail;
 
 class AuthController extends Controller
 {
@@ -36,8 +37,11 @@ class AuthController extends Controller
             'name' => $request->name,
             //  'last_name' => $request->last_name,
             'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
+            'confirm_token' => Str::random(30)
         ]);
+        $confirm_link = env('APP_URL') . '/api/auth/confirm/' . $user->confirm_token;
+        \Mail::to($request->email)->send(new confirmEmail($confirm_link));
         $customer = \Conekta\Customer::create(
           [
             'name'  => $request->name,
@@ -49,6 +53,17 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Successfully created user!'
         ], 201);
+    }
+
+    public function confirmEmail ($confirm_token) {
+        $userToConfirm = User::where('confirm_token', $confirm_token)->first();
+        $userToConfirm->confirmed = 1;
+        $userToConfirm->save();
+        //  \Mail::to('betozarzoza@gmail.com')->send(new confirmEmail('123456'));
+    }
+
+    public function testConfirmMail ($confirm_token) {
+        return view('emails.confirm', ['token' => $confirm_token]);
     }
 
     /**

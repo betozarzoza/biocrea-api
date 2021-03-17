@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="color-scheme" content="light dark" />
     <meta name="supported-color-schemes" content="light dark" />
-    <title>Restablecer Contraseña</title>
+    <title>Confirmacion de correo</title>
     <style type="text/css" rel="stylesheet" media="all">
     /* Base ------------------------------ */
     
@@ -433,7 +433,7 @@
   <![endif]-->
   </head>
   <body>
-    <span class="preheader">Notificación de restablecimiento de contraseña.</span>
+    <span class="preheader">Notificación de confirmacion de correo.</span>
     <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
       <tr>
         <td align="center">
@@ -453,7 +453,7 @@
                 <tr>
                 <td align="center" valign="top" width="600">
                 <![endif]-->
-                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                   <tr>
                     <td align="center" valign="top" style="padding: 20px 18px; padding-top: 0px;">
                       <a href="https://biocrea.mx/#/" target="_blank" style="display: inline-block;">
@@ -478,8 +478,8 @@
                   <tr>
                     <td class="content-cell">
                       <div class="f-fallback">
-                        <h2 style="color: #06377a;">Restablecer Contraseña</h2>
-                        <p>Estas viendo este correo porque recibimos una solicitud de restablecimiento de contraseña desde tu cuenta <span style="color: #db1f15; font-weight: 800;">Biocrea</span>. Usa el botón de abajo para continuar con el proceso.</p>
+                        <h2 style="color: #06377a;">Confirmacion de correo</h2>
+                        <p>Gracias por unirte a <span style="color: #db1f15; font-weight: 800;">Biocrea</span>, usa el botón de abajo para continuar con el proceso de verificacion de correo.</p>
                         <!-- Action -->
                         <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                           <tr>
@@ -489,7 +489,7 @@
                               <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
                                 <tr>
                                   <td align="center">
-                                    <a href="{{ $token }}" class="f-fallback button" target="_blank" style="color: #fff;">Restablecer contraseña</a>
+                                    <a href="{{ $token }}" class="f-fallback button" target="_blank" style="color: #fff;">Confirmar correo</a>
                                   </td>
                                 </tr>
                               </table>
@@ -497,8 +497,6 @@
                           </tr>
                         </table>
 
-                        <p>Si no solicitaste restablecer tu contraseña, puedes ignorar este correo.</p>
-                        
                         <!-- Sub copy -->
                         <table class="body-sub" role="presentation">
                           <tr>

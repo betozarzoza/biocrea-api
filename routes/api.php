@@ -22,6 +22,8 @@ Route::group([
     'prefix' => 'auth'
 ], function () {
     Route::post('login', 'App\Http\Controllers\AuthController@login');
+    Route::get('confirm/{confirm_token}', 'App\Http\Controllers\AuthController@confirmEmail');
+    Route::get('testconfirm/{confirm_token}', 'App\Http\Controllers\AuthController@testConfirmMail');
     Route::post('signup', 'App\Http\Controllers\AuthController@signup');
 
     Route::group([
@@ -73,6 +75,14 @@ Route::group([
     Route::post('token', 'App\Http\Controllers\AuthController@createResetPasswordToken');
     Route::post('password', 'App\Http\Controllers\AuthController@resetPassword');
 });
+
+Route::group([
+  'prefix' => 'password'
+], function() {
+    Route::post('email', 'App\Http\Controllers\ForgotPasswordController@sendResetLinkEmail');
+    Route::post('reset', 'App\Http\Controllers\ForgotPasswordController@passwordReset');
+});
+
 
 Route::group([
     'prefix' => 'conekta'
