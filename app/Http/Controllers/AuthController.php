@@ -40,8 +40,8 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
             'confirm_token' => Str::random(30)
         ]);
-        $confirm_link = env('APP_URL') . '/api/auth/confirm/' . $user->confirm_token;
-        \Mail::to($request->email)->send(new confirmEmail($confirm_link));
+        //  $confirm_link = env('APP_URL') . '/api/auth/confirm/' . $user->confirm_token;
+        //  \Mail::to($request->email)->send(new confirmEmail($confirm_link));
         $customer = \Conekta\Customer::create(
           [
             'name'  => $request->name,
