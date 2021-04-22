@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use Conekta\Conekta;
 use App\Mail\confirmEmail;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
