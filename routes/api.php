@@ -25,6 +25,7 @@ Route::group([
     Route::get('confirm/{confirm_token}', 'App\Http\Controllers\AuthController@confirmEmail');
     Route::get('testconfirm/{confirm_token}', 'App\Http\Controllers\AuthController@testConfirmMail');
     Route::post('signup', 'App\Http\Controllers\AuthController@signup');
+    Route::post('login/facebook', 'App\Http\Controllers\AuthController@facebookLogin');
 
     Route::group([
       'middleware' => 'auth:api'

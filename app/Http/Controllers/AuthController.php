@@ -180,4 +180,38 @@ class AuthController extends Controller
     {
         return response()->json($request->user());
     }
+
+    public function facebookLogin (Request $request) {
+      //  $user = $request->user();
+      if ($request->authResponse) {
+        $token = $request->authResponse['accessToken'];
+        $facebookUser = Socialite::driver('facebook')->userFromToken($token);
+        if (User::where('email', $facebookUser->email)->exists()) {
+          $userId = User::where('email', $facebookUser->email)->first();
+          $user = User::find($userId->id);
+        } else {
+          $name = explode(" ", $facebookUser->user['name']);
+          $user = new User([
+              'email' => $facebookUser->email,
+              'facebook_id' => $facebookUser->id,
+              'name' => $name[0],
+              'last_name' => $name[1],
+          ]);
+          Conekta::setApiKey(env('CONEKTA_API_KEY'));
+          $customer = \Conekta\Customer::create(
+            [
+              'name'  => $request->name,
+              'email' => $request->email
+            ]
+          );
+          $user->conekta_id = $customer->id;
+          $user->save();
+        }
+        $tokenResult = $user->createToken('Personal Access Token')->accessToken;
+        return response()->json([
+            'access_token' => $tokenResult,
+            'token_type' => 'Bearer'
+        ]);
+      }
+    }
 }
