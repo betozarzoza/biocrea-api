@@ -21,7 +21,8 @@ class User extends \TCG\Voyager\Models\User
         'name',
         'email',
         'password',
-        'confirm_token'
+        'confirm_token',
+        'facebook_id'
     ];
 
     /**

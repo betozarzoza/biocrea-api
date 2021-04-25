@@ -191,18 +191,16 @@ class AuthController extends Controller
           $userId = User::where('email', $facebookUser->email)->first();
           $user = User::find($userId->id);
         } else {
-          $name = explode(" ", $facebookUser->user['name']);
           $user = new User([
               'email' => $facebookUser->email,
               'facebook_id' => $facebookUser->id,
-              'name' => $name[0],
-              'last_name' => $name[1],
+              'name' => $facebookUser->user['name']
           ]);
           Conekta::setApiKey(env('CONEKTA_API_KEY'));
           $customer = \Conekta\Customer::create(
             [
-              'name'  => $request->name,
-              'email' => $request->email
+              'name'  => $facebookUser->user['name'],
+              'email' => $facebookUser->email,
             ]
           );
           $user->conekta_id = $customer->id;
